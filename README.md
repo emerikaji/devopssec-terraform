@@ -33,3 +33,24 @@ Pourtant, je ne parviens pas à accéder à la page web au port 80 de l'instance
 Après vérification dans la documentation, Amazon Linux utilise le format [Cloud-init](https://docs.cloud-init.io/en/latest/).
 Je crée un fichier YAML selon la spécification et essaye à nouveau, sans succès complet : `httpd` est installé mais non démarré, donc seules les directives de package ont été lancées.
 Des vérification dans les logs cloud-init (`/var/log/cloud-init-output.log`) me font enfin comprendre qu'il faut relancer l'instance entièrement pour que le script soit exécuté. Après cela, la page web devient accessible.
+
+### 3. Input/Output
+
+Il semble que j'avais pris de l'avance, puisque cette section décrit les variables. Un ajout à mes connaissances tout de même avec les variables `output`.
+
+### 4. Provisionneurs
+
+À retenir:
+- `terraform taint` permet de marquer une ressource comme corrompue pour forcer la regénération.
+
+Les provisonneurs comme `local-exec`, `remote-exec` ou `file` semblent surtout être utiles s'il y a un manque d'options plus spécialisées.
+
+### 5. Backends & Workspaces
+
+À retenir:
+- `terraform.backend` permet de sauvegarder l'état à différents endroits.
+- Changer d'espace de travail avec `terraform workspace` sépare les ressources.
+
+Peu de choses à adapter dans cette section du tutoriel, à part une installation plus directe pour le CLI `aws`. Travailler avec des buckets S3 facilite grandement la gestion du stockage distant.
+
+Petit accroc en réutilisant les configurations existantes pour les essais de changement de workspace : donner un nom à une ressource fait qu'elle ne peut pas être dupliquée entre workspaces sans créer de problèmes. J'ai retiré le nom fixe du `aws_security_group`, sans quoi `terraform apply` refuse de le créer une seconde fois puisqu'il existe déjà sous le même nom.

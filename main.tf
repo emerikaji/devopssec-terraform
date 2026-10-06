@@ -1,12 +1,16 @@
 provider "aws" {
   region = "eu-north-1"
-  access_key = var.access_key
-  secret_key = var.secret_key
+}
+
+terraform {
+  backend "s3" {
+    region = "eu-north-1"
+    bucket = "terraform-test-503718466266-eu-north-1-an"
+    key = "states/terraform.tfstate"
+  }
 }
 
 resource "aws_security_group" "sg_terraform" {
-  name = "terraform-test-sg"
-
   egress {
     from_port   = 0
     to_port     = 0
@@ -37,6 +41,6 @@ resource "aws_instance" "ec2_terraform" {
   user_data = file("user-data.yml")
 
   tags = {
-    Name = "terraform test"
+    Name = terraform.workspace == "production" ? "terraform prod" : "terraform test"
   }
 }
