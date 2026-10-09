@@ -3,6 +3,10 @@
 Cette repo est dédiée à mon apprentissage de l'IaC avec Terraform à travers [ce cours de DevOpsSec](https://devopssec.fr/category/apprendre-terraform), qui utilise AWS comme base pour l'infrastructure.
 Je la mettrai à jour avec mes fichiers de configuration, mais aussi mes problèmes rencontrés et les adaptations faites par rapport aux tutoriels.
 
+## Environnement
+
+J'ai suivi ces cours à partir de mon laptop sous CachyOS. L'édition des fichiers de configuration Terraform était faite sous Code - OSS, avec l'extension HashiCorp Terraform pour l'autocomplétion et la vérification de syntaxe.
+
 ## Conclusions
 
 Section future.
