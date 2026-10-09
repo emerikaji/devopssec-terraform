@@ -1,12 +1,27 @@
-provider "aws" {
-  region = "eu-north-1"
-}
-
 terraform {
   backend "s3" {
     region = "eu-north-1"
     bucket = "terraform-test-503718466266-eu-north-1-an"
     key = "states/terraform.tfstate"
+  }
+}
+
+data "external" "random_name" {
+  program = ["python3.12", "naming.py"]
+}
+
+provider "aws" {
+  region = var.region
+}
+
+data "aws_ami" "amazon_linux_ami" {
+  most_recent = true
+
+  owners = ["amazon"]
+
+  filter {
+    name = "name"
+    values = ["al2023-ami-2023.*-x86_64"]
   }
 }
 
@@ -34,13 +49,15 @@ resource "aws_security_group" "sg_terraform" {
 }
 
 resource "aws_instance" "ec2_terraform" {
-  ami = var.ami
+  ami = data.aws_ami.amazon_linux_ami.id
+
   instance_type = var.instance_type
+  
   vpc_security_group_ids = [aws_security_group.sg_terraform.id]
 
   user_data = file("user-data.yml")
 
   tags = {
-    Name = terraform.workspace == "production" ? "terraform prod" : "terraform test"
+    Name = "${data.external.random_name.result.random_name}-${terraform.workspace == "production" ? "prod" : "test"}"
   }
 }

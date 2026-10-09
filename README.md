@@ -54,3 +54,14 @@ Les provisonneurs comme `local-exec`, `remote-exec` ou `file` semblent surtout �
 Peu de choses à adapter dans cette section du tutoriel, à part une installation plus directe pour le CLI `aws`. Travailler avec des buckets S3 facilite grandement la gestion du stockage distant.
 
 Petit accroc en réutilisant les configurations existantes pour les essais de changement de workspace : donner un nom à une ressource fait qu'elle ne peut pas être dupliquée entre workspaces sans créer de problèmes. J'ai retiré le nom fixe du `aws_security_group`, sans quoi `terraform apply` refuse de le créer une seconde fois puisqu'il existe déjà sous le même nom.
+
+### 6. Data Sources
+
+À retenir:
+- Les entrées `data` permettent d'obtenir des informations de sources externes.
+- Les informations peuvent changer avec le temps. Il peut donc y avoir des différences entre `terraform plan` et `terraform apply`.
+    - Pour éviter le problème : `terraform plan -out=file` pour sauvegarder le résultat et l'utiliser tel quel.
+
+J'ai adapté le contenu pour obtenir des images Amazon Linux 2023 à la place d'Ubuntu, et ce de manière plus flexible en utilisant le wildcard.
+
+Pour la partie génération aléatoire de nom par python, je me suis amusé à les créer sous la forme "adjectif-nom commun" à la manière des noms par défaut sur les grandes plateformes.

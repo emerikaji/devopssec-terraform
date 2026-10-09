@@ -1,5 +1,5 @@
-variable "ami" {
-  description = "AMI of the desired instance"
+variable "region" {
+  description = "AWS region to use project-wide"
   type        = string
 }
 
